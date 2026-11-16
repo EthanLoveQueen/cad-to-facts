@@ -1,7 +1,7 @@
 # cad-to-facts 详细设计（设计评审稿）
 
 > 状态：编程前设计基线，2026-11-13  
-> 上游文档：`cad-to-facts-plan.md`  
+> 上游设计基线：内部维护版本，不随公开仓库发布。  
 > 术语以根目录 `GLOSSARY.md` 为准。  
 > 本文定义接口、契约、状态与验收语义，不包含实现代码。
 
@@ -540,7 +540,7 @@ ReviewReport 的总体状态定义为：
 
 ## 7. 修改详细设计
 
-当前仓库已实现本节契约的 STEP 纵向切片：`prepare_change` / `verify_change` 公共接口及对应 CLI、ChangeRequest/ChangePlan/SourceManifest 内容身份、可选 ApprovalRecord/ExecutionRecord 一致性检查和 ModificationReport。`cad_to_facts.records` 还提供从实际工作区字节构建 root/derived 清单、批准和执行记录的确定性接口；批准人、决定、时间和执行 attestation 必须显式提供，不能从文件存在推断。一次实际先批准、后执行、再验证的 text-to-cad 0.11.10 测试见 `docs/attested-change-smoke.md`；早期历史 smoke 仍为 unattested。`prepare-change` 目前仅从 `numeric.compare` 的 violated/unknown Finding 派生目标。两个命令和记录构建器都不执行 CAD 或源脚本；完整状态机和外部批准工作流编排仍未实现。
+当前仓库已实现本节契约的 STEP 纵向切片：`prepare_change` / `verify_change` 公共接口及对应 CLI、ChangeRequest/ChangePlan/SourceManifest 内容身份、可选 ApprovalRecord/ExecutionRecord 一致性检查和 ModificationReport。`cad_to_facts.records` 还提供从实际工作区字节构建 root/derived 清单、批准和执行记录的确定性接口；批准人、决定、时间和执行 attestation 必须显式提供，不能从文件存在推断。一次实际先批准、后执行、再验证的 text-to-cad 0.11.10 测试记录保存在维护者本地，不随公开仓库发布；公开的可重放示例见 `examples/change-loop/README.md`。早期历史 smoke 仍为 unattested。`prepare-change` 目前仅从 `numeric.compare` 的 violated/unknown Finding 派生目标。两个命令和记录构建器都不执行 CAD 或源脚本；完整状态机和外部批准工作流编排仍未实现。
 
 ### 7.1 ChangeRequest 契约
 

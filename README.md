@@ -123,9 +123,8 @@ The repository contains P1 STEP vertical slices, a first DWG/DXF drawing-analysi
 These are limited format-specific slices, not complete P1/P2/P3/P4/P5 releases. CAD execution is not embedded or invoked
 by either change command; target derivation currently supports only `numeric.compare` findings.
 Full AP242 semantic-PMI coverage, general ProcessCardInput preparation, wall-thickness measurement,
-general feature recognition, suppression semantics, IFC and mesh adapters remain unimplemented. The broader
-design lives in [`cad-to-facts-plan.md`](cad-to-facts-plan.md) and
-[`docs/detailed-design.md`](docs/detailed-design.md).
+general feature recognition, suppression semantics, IFC and mesh adapters remain unimplemented. The
+public design contract lives in [`docs/detailed-design.md`](docs/detailed-design.md).
 
 ## Use as an agent skill
 
@@ -192,9 +191,9 @@ uv run pytest
 
 `uv sync` downloads the locked Python and project dependencies into the local `.venv` when they are
 not already available; the deterministic commands themselves are offline. See the
-[installation guide](docs/installation.md) for isolated CLI/plugin installation and updates, the
-[recovery playbook](docs/recovery.md) for doctor codes, adapter failures and verification recovery,
-and the [release checklist](docs/release.md) for CI, archive and no-publish plugin acceptance.
+[installation guide](docs/installation.md) for isolated CLI/plugin installation and updates and the
+[recovery playbook](docs/recovery.md) for doctor codes, adapter failures and verification recovery.
+CI and distribution checks are defined in `.github/workflows/ci.yml` and `scripts/check_dist.py`.
 
 ## Inspect a STEP file
 
@@ -282,8 +281,8 @@ For an end-to-end agent-workflow check, `examples/question-assembly.step` contai
 name candidates, one window name candidate and one known 3 mm-radius, 10 mm-long cylindrical
 through-hole. The `evals/model-question-*` cases exercise compound evidence separation, conditional
 per-target orientations and the assumed-left-door SVG handoff. They are local model-backed behavior
-evaluations, not exporter-interoperability evidence; run them with `--no-publish` as documented in
-[`docs/release.md`](docs/release.md).
+evaluations, not exporter-interoperability evidence; run them with `--no-publish` and keep their
+reports under the ignored `evals/results/` directory.
 
 ## Inspect or review a DWG/DXF drawing
 
@@ -456,11 +455,12 @@ replay report.
 Current geometric fixtures are analytic parts written and read with OCCT. They establish repeatable
 numerical smoke tests, not CAD-exporter interoperability. The pinned [P0 corpus](docs/corpus-validation.md)
 adds local real files, malformed inputs, generated unit variants, NIST AP203/AP242 models and a KiCad
-model. A [text-to-cad 0.11.10 smoke test](docs/text-to-cad-smoke.md) records an earlier real export and
-passed output verification with honestly `unattested` provenance. A separate
-[attested change run](docs/attested-change-smoke.md) used pre-execution approval and an explicit local
-execution attestation, then achieved `verification_status=passed` and `execution_provenance=attested`;
-this is a test-harness attestation, not independent cryptographic proof or production approval.
+model. A local text-to-cad 0.11.10 smoke test observed an earlier real export and passed output
+verification with honestly `unattested` provenance; its detailed record is maintainer-only and not
+published. A separate attested change run used pre-execution approval and an explicit local execution
+attestation, then achieved `verification_status=passed` and `execution_provenance=attested`; the
+replayable public record is in [`examples/change-loop/README.md`](examples/change-loop/README.md).
+This is a test-harness attestation, not independent cryptographic proof or production approval.
 [Real-file validation records](docs/real-corpus.md) summarize read-only observations on
 user-supplied production assemblies. Their identity, sizes, hashes and measurements are withheld,
 and the files and private regression modules are not redistributed. The observations cover

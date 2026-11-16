@@ -10,6 +10,9 @@ test-data/
 .DS_Store
 Thumbs.db
 
+# Maintainer-only plans, release notes and validation records.
+internal/
+
 # User-supplied production corpus: private local regression only, never published.
 tests/corpus/
 tests/test_private_*.py

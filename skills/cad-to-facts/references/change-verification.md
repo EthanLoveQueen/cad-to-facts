@@ -139,9 +139,9 @@ or scripts and do not infer approvals or execution from output existence.
 
 Approval requires an explicit approver, decision and timestamp. Execution requires explicit mode,
 result, timestamp, `attested_by`, and `attestation`; those fields are retained in the record. An
-attested record remains a declared local observation, not independent cryptographic proof. A real
-pre-approval/post-attestation text-to-cad 0.11.10 run is recorded in the repository's
-`docs/attested-change-smoke.md`; the earlier `docs/text-to-cad-smoke.md` remains unattested.
+attested record remains a declared local observation, not independent cryptographic proof. A
+replayable pre-approval/post-attestation example is packaged in `examples/change-loop/README.md`;
+the detailed local validation records are maintainer-only and are not published.
 
 ## Source-backed provenance
 

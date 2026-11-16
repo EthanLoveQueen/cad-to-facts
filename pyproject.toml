@@ -74,7 +74,6 @@ include = [
     "/SECURITY.md",
     "/GLOSSARY.md",
     "/CLAUDE.md",
-    "/cad-to-facts-plan.md",
     "/CHANGELOG.md",
     "/uv.lock",
     "/pyproject.toml",
