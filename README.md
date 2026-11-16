@@ -3,15 +3,19 @@
 [![CI](https://github.com/EthanLoveQueen/cad-to-facts/actions/workflows/ci.yml/badge.svg)](https://github.com/EthanLoveQueen/cad-to-facts/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](pyproject.toml)
+[![Agent skill](https://img.shields.io/badge/agent-skill-5A67D8)](skills/)
 
 **Traceable CAD facts. Deterministic reviews. Verified changes.**
 
-cad-to-facts turns STEP, DXF and optional DWG files into evidence-bound JSON, answers bounded
-engineering questions, reviews files against explicit requirements, and verifies externally produced
-changes. The deterministic core runs locally; AI agents use the same CLI through a packaged Claude
-Code skill.
+cad-to-facts is an agent-first CAD evidence toolkit. It turns STEP, DXF and optional DWG files into
+evidence-bound JSON, answers bounded engineering questions, reviews files against explicit
+requirements, and verifies externally produced changes. The deterministic core runs locally; packaged
+agent skills tell the model when and how to call it without inventing facts.
 
-[Quick start](#quick-start) · [Capabilities](#capabilities) · [How it works](#how-it-works) · [Commands](#inspect-a-step-file) · [Scope](#scope-and-honest-limits) · [Docs](#documentation)
+> **Using an agent?** Start with [Use it as an agent skill](#use-it-as-an-agent-skill). The CLI is the
+> deterministic engine underneath.
+
+[Agent skill](#use-it-as-an-agent-skill) · [Capabilities](#capabilities) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Scope](#scope-and-honest-limits) · [Docs](#documentation)
 
 ## Why cad-to-facts
 
@@ -23,6 +27,78 @@ Code skill.
   contracts. Output validation can pass while execution provenance remains `unattested`.
 - **Agent-ready, deterministic underneath.** The same CLI powers a Claude Code plugin; parsing,
   measurement, review, BOM extraction and verification stay offline.
+
+## Use it as an agent skill
+
+The primary integration is an agent skill. The repository ships two Claude Code skills that turn the
+deterministic `facts` CLI into an evidence-disciplined workflow:
+
+| Skill | What the agent uses it for |
+| --- | --- |
+| [`cad-to-facts`](skills/cad-to-facts/SKILL.md) | Inspect STEP/DXF/DWG, resolve occurrences, ask bounded questions, extract PMI/BOM, review requirements, prepare and verify changes |
+| [`cad-view`](skills/cad-view/SKILL.md) | Resolve an exact STEP occurrence and render a target-isolated SVG with its evidence manifest |
+
+The skills are not a second AI layer. They contain `SKILL.md` routing and one-level references that
+tell the agent which command to run, which inputs are required, and how to preserve assumptions,
+coverage and gaps. Parsing, measurement, review, BOM extraction and verification remain in the
+offline Python core. Output stays selective, so an agent does not need to ingest every face or
+triangle; candidates, assumptions and unknown counts are never promoted to facts.
+
+### How the agent uses it
+
+```text
+User question
+  -> skill selects a bounded facts workflow
+    -> facts CLI emits evidence-bound JSON
+      -> agent answers with values, assumptions and gaps
+```
+
+Typical requests:
+
+- **Locate a part / 定位零件**: "where is the left door?" or "左侧的门在哪里？" -> `facts ask` /
+  `facts resolve` -> occurrence path, world bounding box and spatial assumptions.
+- **Review a file**: "does this STEP meet the requirements?" -> `facts review` with explicit
+  requirements/rules/scope/context -> findings, coverage and unresolved diagnostics.
+- **Render a view**: "export the left door front view" -> `cad-to-facts` resolves the exact target;
+  `cad-view` renders it -> SVG plus `.view.json` binding artifact, snapshot, target and camera.
+- **Extract downstream data**: "what is the model BOM?" -> `facts bom` -> neutral BOM with
+  known/observed/unknown quantities; `facts pmi` extracts declared semantic PMI separately.
+
+### Install the skill
+
+The plugin installs the skill, not the CLI. Install the CLI first:
+
+```bash
+uv tool install --python 3.13 "git+https://github.com/EthanLoveQueen/cad-to-facts.git"
+facts doctor --check
+```
+
+Then install the plugin in Claude Code:
+
+```bash
+claude plugin marketplace add EthanLoveQueen/cad-to-facts
+claude plugin install cad-to-facts@cad-to-facts
+```
+
+For local skill development:
+
+```bash
+git clone https://github.com/EthanLoveQueen/cad-to-facts.git
+cd cad-to-facts
+uv sync --locked
+claude --plugin-dir .
+```
+
+The skill sources are plain `SKILL.md` plus one-level `references/`; an OpenAI agent interface file is
+included at `skills/cad-to-facts/agents/openai.yaml`. The same CLI contract can be adapted by other
+agent runtimes, but only the Claude Code packaging is validated in this repository. The modification
+workflow calls the separately installed text-to-cad skill; neither text-to-cad nor its `cad-server`
+runtime is a Python dependency. The skill folders contain their own MIT licenses.
+
+Model-backed skill evals live under `evals/` and run locally with `--no-publish`; CI validates the
+CLI, packaging and plugin manifest, not model behavior. See the
+[skill](skills/cad-to-facts/SKILL.md), [view skill](skills/cad-view/SKILL.md) and
+[installation guide](docs/installation.md).
 
 ## Capabilities
 
@@ -139,10 +215,12 @@ choose a first match.
 ## How it works
 
 ```text
-SourceArtifact (immutable bytes + SHA-256)
-  -> ModelSnapshot (parser provenance, units, entity discovery, diagnostics)
-    -> FactSet (declared / measured / derived facts + evidence + gaps)
-      -> ReviewReport | BOMExtract | AnswerReport | ChangeRequest / ModificationReport
+User question or reviewed change
+  -> agent skill (SKILL.md + references) or direct CLI
+    -> SourceArtifact (immutable bytes + SHA-256)
+      -> ModelSnapshot (parser provenance, units, entity discovery, diagnostics)
+        -> FactSet (declared / measured / derived facts + evidence + gaps)
+          -> ReviewReport | BOMExtract | AnswerReport | ChangeRequest / ModificationReport
 ```
 
 STEP B-rep, DXF drawings and assemblies keep format-specific profiles; there is no universal
@@ -155,7 +233,8 @@ cad-to-facts is **not** a geometry kernel or a universal CAD converter. It does 
 manufacturing intent, certify a design, recognize arbitrary features, or claim STEP exporter
 interoperability. AP242 semantic PMI, drawing semantics, feature recognition, orientation and
 `process-input` are deliberately bounded profiles; required but unsupported inputs stay explicit
-`UNSUPPORTED` gaps.
+`UNSUPPORTED` gaps. The skill layer routes work to the CLI; it does not add VLM inference, general
+feature recognition or general drawing understanding.
 
 The implemented surface is intentionally narrow: STEP facts, review, model BOM, declared PMI,
 target views and verified changes, plus a first DXF/DWG drawing slice and a constrained single-solid
@@ -172,44 +251,6 @@ process-input profile. It is not a complete release across all planned format sl
 
 Not implemented: IFC, mesh adapters, general feature recognition, title-block inference, PNG output
 and VLM inference.
-
-## Agent skill and plugin
-
-The repository is also a Claude Code plugin. `.claude-plugin/plugin.json` points at `skills/`.
-[`skills/cad-to-facts/SKILL.md`](skills/cad-to-facts/SKILL.md) routes facts, evidence-guided questions,
-occurrence resolution, semantic PMI, drawings, review, BOM and change preparation/verification to
-one-level references. [`skills/cad-view/SKILL.md`](skills/cad-view/SKILL.md) handles target-isolated
-STEP SVG views and their manifests. Both drive the same `facts` CLI and deterministic core; neither
-adds an AI layer to parsing, review, rendering or verification. A separate `cad-visual` VLM workflow
-is only a future option, not an installed capability.
-
-Install the CLI first (see [Quick start](#quick-start)), then install the plugin:
-
-```bash
-claude plugin marketplace add EthanLoveQueen/cad-to-facts
-claude plugin install cad-to-facts@cad-to-facts
-```
-
-For local development, load the current checkout for one session:
-
-```bash
-claude --plugin-dir .
-```
-
-Or register the local marketplace:
-
-```bash
-claude plugin marketplace add .
-claude plugin install cad-to-facts@cad-to-facts
-```
-
-The plugin installs the skill, not the Python CLI. If `facts` is not on PATH, run
-`uv run --project /path/to/cad-to-facts facts ...`. Use a clean checkout when installing from a local
-path; local workspace artifacts such as `.venv/` should not be distributed. The skill folders contain
-their own MIT `LICENSE` files.
-
-The modification workflow calls the separately installed text-to-cad CAD skill; neither text-to-cad
-nor its `cad-server` runtime is a Python dependency of this package.
 
 ## Inspect a STEP file
 
