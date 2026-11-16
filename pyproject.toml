@@ -1,7 +1,7 @@
 [project]
 name = "cad-to-facts"
 version = "0.1.0"
-description = "Evidence-driven CAD facts, deterministic requirements review and change verification"
+description = "Agent-first CAD evidence toolkit: Claude Code skills and a deterministic Python CLI for traceable CAD facts, requirements review, BOM/PMI, and verified changes"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
