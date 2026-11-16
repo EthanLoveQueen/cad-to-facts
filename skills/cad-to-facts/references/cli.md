@@ -99,7 +99,7 @@ locations. See the repository's `docs/model-views.md` for the full contract.
 ```bash
 uv run facts features examples/question-assembly.step --query examples/features-doors-windows-holes.json
 uv run facts orient examples/question-assembly.step --selector examples/resolve-left-door.json
-uv run facts ask model.step --question "左侧的门在哪里？"
+uv run facts ask model.step --question "where is the left door?"
 uv run facts ask model.step --spec examples/question-door-candidates.json
 uv run facts ask drawing.dxf --spec examples/drawing-question.json
 ```

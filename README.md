@@ -55,8 +55,8 @@ User question
 
 Typical requests:
 
-- **Locate a part / 定位零件**: "where is the left door?" or "左侧的门在哪里？" -> `facts ask` /
-  `facts resolve` -> occurrence path, world bounding box and spatial assumptions.
+- **Locate a part**: "where is the left door?" -> `facts ask` / `facts resolve` -> occurrence path,
+  world bounding box and spatial assumptions.
 - **Review a file**: "does this STEP meet the requirements?" -> `facts review` with explicit
   requirements/rules/scope/context -> findings, coverage and unresolved diagnostics.
 - **Render a view**: "export the left door front view" -> `cad-to-facts` resolves the exact target;
@@ -83,7 +83,7 @@ claude plugin install cad-to-facts@cad-to-facts
 Then invoke `/cad-to-facts` in a Claude Code session:
 
 ```text
-/cad-to-facts 检查 examples/question-assembly.step，左侧的门在哪里？
+/cad-to-facts where is the left door in examples/question-assembly.step?
 ```
 
 For local skill development:
@@ -314,9 +314,9 @@ VLM interpretation remain unimplemented.
 ```bash
 uv run facts features examples/question-assembly.step --query examples/features-doors-windows-holes.json
 uv run facts orient examples/question-assembly.step --selector examples/resolve-left-door.json
-uv run facts ask examples/question-assembly.step --question "左侧的门在哪里？"
-uv run facts ask examples/question-assembly.step --question "门的正面是哪边？"
-uv run facts ask examples/question-assembly.step --question "有多少个孔？"
+uv run facts ask examples/question-assembly.step --question "where is the left door?"
+uv run facts ask examples/question-assembly.step --question "what is the front face of the door?"
+uv run facts ask examples/question-assembly.step --question "how many holes are there?"
 uv run facts ask examples/question-assembly.step --spec examples/question-door-candidates.json
 ```
 

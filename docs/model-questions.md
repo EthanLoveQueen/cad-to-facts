@@ -69,9 +69,9 @@ the commands independently re-read the source.
 
 ```bash
 facts ask model.step --spec examples/question-door-candidates.json
-facts ask model.step --question "左侧的门在哪里？"
-facts ask model.step --question "门的正面是哪边？"
-facts ask model.step --question "有多少个孔？"
+facts ask model.step --question "where is the left door?"
+facts ask model.step --question "what is the front face of the door?"
+facts ask model.step --question "how many holes are there?"
 ```
 
 `--spec` and `--question` are mutually exclusive and one is required. Both paths execute the same

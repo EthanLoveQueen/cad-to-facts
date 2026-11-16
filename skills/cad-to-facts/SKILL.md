@@ -113,7 +113,7 @@ For free-form wording, use the evidence loop in
    gaps and output paths. `complete` covers only the declared interpretation and evidence policy.
 
 ```bash
-uv run facts ask assembly.step --question "左侧的门在哪里？"
+uv run facts ask assembly.step --question "where is the left door?"
 uv run facts ask assembly.step --spec examples/question-door-candidates.json
 uv run facts resolve assembly.step --selector examples/resolve-left-door.json
 ```
