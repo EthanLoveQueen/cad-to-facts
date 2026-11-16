@@ -75,7 +75,8 @@
 ### Changed
 
 - Reorganized the README around a concise overview, capability table, real output excerpts and a
-  dedicated implementation-status page. No CLI behavior changed.
+  dedicated implementation-status page. Detailed command walkthroughs moved to `docs/commands.md`.
+  No CLI behavior changed.
 
 ### Fixed
 

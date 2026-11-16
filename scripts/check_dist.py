@@ -12,6 +12,7 @@ import zipfile
 REQUIRED_SDIST = {
     "src/cad_to_facts/cli.py",
     "skills/cad-to-facts/SKILL.md",
+    "docs/commands.md",
     "docs/installation.md",
     "docs/recovery.md",
     "docs/status.md",
