@@ -27,7 +27,7 @@ executor does the counting and measurement.
 
 ```json
 {
-  "original_text": "模型空间有多少条线？",
+  "original_text": "How many lines are in model space?",
   "interpretation_basis": "agent_interpretation",
   "interpretations": [
     {
@@ -158,7 +158,7 @@ without treating a name match as a field fact. It uses the same declared match b
 {
   "interpretation_id": "material-context",
   "intent": "semantic_evidence",
-  "candidate_terms": ["material", "材料", "steel"],
+  "candidate_terms": ["material", "steel"],
   "candidate_bases": ["text", "attribute_tag"],
   "evidence_policy": "candidates_allowed"
 }

@@ -84,7 +84,7 @@ facts ask drawing.dwg --oda-path "C:\Program Files\ODA\ODAFileConverter\ODAFileC
 
 ```json
 {
-  "original_text": "模型空间有多少条线？",
+  "original_text": "How many lines are in model space?",
   "interpretation_basis": "agent_interpretation",
   "interpretations": [{
     "interpretation_id": "model-lines",

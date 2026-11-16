@@ -20,9 +20,10 @@ Translate the request into a small task plan. Identify separately:
 - **Evidence policy**: strict validated evidence or explicitly requested candidates/assumptions.
 - **Deliverable**: a concise answer, neutral JSON, or a new SVG plus manifest.
 
-Split compound requests into separate interpretations. For example, “左侧有几扇门，窗户总数和孔
-尺寸是多少，再导出左门正面图” contains occurrence counting, two feature questions, orientation,
-and rendering. Do not let a successful first subanswer silently substitute for the others.
+Split compound requests into separate interpretations. For example, "how many doors are on the
+left, what are the total window count and hole dimensions, and export a front view of the left
+door" contains occurrence counting, two feature questions, orientation, and rendering. Do not let a
+successful first subanswer silently substitute for the others.
 
 Choose the initial evidence path:
 
@@ -58,18 +59,18 @@ separately labeled specs or clearly labeled alternative groups in notes; never a
 alternative readings. Separate specs are preferable when one aggregate status would obscure which
 reading produced which answer.
 
-Example for “左侧门有几个？窗户总数、孔数量和孔尺寸呢？”:
+Example for "how many left doors are there, and what are the total window count, hole count and hole dimensions?":
 
 ```json
 {
-  "original_text": "左侧门有几个？窗户总数、孔数量和孔尺寸呢？",
+  "original_text": "how many left doors are there, and what are the total window count, hole count and hole dimensions?",
   "interpretation_basis": "agent_interpretation",
   "interpretations": [
     {
       "interpretation_id": "left-door-occurrences",
       "intent": "occurrence_count",
       "selector": {
-        "name_contains_any": ["door", "门"],
+        "name_contains_any": ["door"],
         "spatial": [{
           "relation": "left_of",
           "reference": {"is_root": true},
@@ -159,9 +160,11 @@ front is acceptable. Avoid asking for information already present in the report.
 
 ## 4. Preserve feature and orientation semantics
 
-Door/window names produce `unvalidated` candidates only. A useful answer to “窗户总数是多少？” may be:
+Door/window names produce `unvalidated` candidates only. A useful answer to "what is the total window
+count?" may be:
 
-> 严格总数仍未知；发现 1 个声明名称候选，但它不是经过功能验证的窗户，也不能证明没有其他窗户。
+> The strict total remains unknown; one declared-name candidate was found, but it is not a
+> functionally validated window and does not prove there are no other windows.
 
 Conservative full cylindrical through-holes can be `validated`, but their count is `observed`, not a
 complete engineering-hole total. Report radius/length/axis/area only from validated geometry. Blind,
@@ -197,10 +200,11 @@ and make these classes visible:
 
 Prefer precise wording:
 
-- “识别到 1 个已验证圆柱通孔” rather than “模型一共有 1 个孔”；
-- “1 个门名称候选” rather than “已确认 1 扇门”；
-- “在全局 front 和装配根参考下，左侧条件唯一匹配……” rather than an unqualified “左边就是……”；
-- “启发式假设 left 为正面” rather than “设计正面是 left”。
+- "one validated cylindrical through-hole was recognized" rather than "the model has exactly one hole";
+- "one door name candidate" rather than "one door confirmed";
+- "under the global front camera and assembly-root reference, one left-side conditional match..."
+  rather than an unqualified "the left side is...";
+- "the heuristic assumes left is the front" rather than "the design front is left".
 
 Do not invent numeric confidence. A valid partial, ambiguous or conditional answer is better than a
 confident guess. Resolved IDs are snapshot-scoped, not persistent identity or editable-source locations.

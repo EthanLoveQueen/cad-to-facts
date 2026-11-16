@@ -16,8 +16,8 @@ facts features model.step --query examples/features-doors-windows-holes.json
 ```
 
 `FeatureQuery.kinds` contains unique `door`, `window` and/or `hole` values. An optional `selector`
-limits occurrences. Default aliases are `door`/`门`, `window`/`窗`, and `hole`/`孔`; a query may provide
-explicit per-kind aliases. Alias matching inspects declared occurrence and definition names.
+limits occurrences. Default aliases include `door`, `window`, and `hole` plus their Chinese
+equivalents; a query may provide explicit per-kind aliases. Alias matching inspects declared occurrence and definition names.
 
 Door and window results are `FeatureCandidate`s with `validation=unvalidated` and
 `recognition_method=declared_name_alias`. Door/window geometric validation is unsupported. A matching
