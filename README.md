@@ -44,12 +44,7 @@ All commands emit JSON with evidence and honest gaps. See the [command sections]
 
 ### Install
 
-```bash
-uv tool install --python 3.13 "git+https://github.com/EthanLoveQueen/cad-to-facts.git"
-facts doctor --check
-```
-
-Or work from a locked checkout:
+Clone the repository and create the locked environment:
 
 ```bash
 git clone https://github.com/EthanLoveQueen/cad-to-facts.git
@@ -57,6 +52,15 @@ cd cad-to-facts
 uv sync --locked
 uv run facts doctor --check
 ```
+
+For an isolated CLI on PATH instead (the examples below require a checkout):
+
+```bash
+uv tool install --python 3.13 "git+https://github.com/EthanLoveQueen/cad-to-facts.git"
+facts doctor --check
+```
+
+If you installed the CLI as a tool, use `facts` in place of `uv run facts` in the examples below.
 
 Python 3.13 is the reference runtime; the explicit `--python 3.13` avoids reusing an unsupported
 tool interpreter. `cadquery-ocp` and `ezdxf` are installed as dependencies. DWG support requires an
@@ -66,7 +70,7 @@ optional, separately installed ODA File Converter supplied with `--oda-path`; wi
 ### Inspect a STEP file
 
 ```bash
-facts inspect examples/box.step --limit 1
+uv run facts inspect examples/box.step --limit 1
 ```
 
 Abridged actual output:
@@ -94,7 +98,7 @@ Abridged actual output:
 ### Ask a bounded question
 
 ```bash
-facts ask examples/question-assembly.step --question "where is the left door?"
+uv run facts ask examples/question-assembly.step --question "where is the left door?"
 ```
 
 Abridged actual output:
