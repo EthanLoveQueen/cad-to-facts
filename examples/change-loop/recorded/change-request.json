@@ -1,0 +1,200 @@
+{
+  "schema_version": "0.1",
+  "request_id": "b3440c4cac5684726b943d8c17ff9ed3912bee1a69eb31a5636265e64f48b9c8",
+  "origin_kind": "review_derived",
+  "origin_review": {
+    "review_run_id": "a62fce82c78cf1a9d712c4b0af3e804c87b034193663f0b7e5bbe4c3c3753c9e",
+    "finding_id": "41cd4f98562e4bfdc0bae99931c1a90d1e848b56ff909bf1c67c02705e07595e",
+    "origin_report_id": "57edbc27bf04645ca3de9a4323575007d7961a3603e65344b8559a4581030dd2",
+    "ruleset": {
+      "ruleset_id": "54b1cb00e79c910c85a1520a584fa2e92f1bcfeff55e53730899cd8cf886cbb9",
+      "version": "1",
+      "requirement_bundle": {
+        "bundle_id": "3cd621f5a6980ed039e0076d3f1b307af400fd0fe30abdc2efe1a5141a765790",
+        "requirements": [
+          {
+            "requirement_id": "req-min-height",
+            "text": "Overall height must be at least 40 mm",
+            "source_ref": "attested-smoke#req-min-height",
+            "content_hash": "c796e2509e0dc4a6d63903c2ee9a7b86296bcb0bfcb1db40cb1f53c57969cc6a"
+          }
+        ]
+      },
+      "rules": [
+        {
+          "rule_id": "min-height",
+          "version": "1",
+          "requirement_refs": [
+            "req-min-height"
+          ],
+          "subject_selector": {
+            "entity_kind": "solid"
+          },
+          "applicability": {},
+          "inputs": [
+            {
+              "name": "height",
+              "predicate": "bbox.extent.z",
+              "required": true
+            }
+          ],
+          "checker": "numeric.compare",
+          "parameters": {
+            "operator": ">=",
+            "threshold": 40.0,
+            "unit": "mm",
+            "abs_tol": 1e-07
+          },
+          "severity": "error",
+          "source": {
+            "reviewed_by": "attested-smoke-test"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "scope_id": "192c7ccc267e40499245c544f0911b5ea002ed5a11d59200cc9e88d402a8a3d7",
+      "included_rules": [
+        {
+          "rule_id": "min-height",
+          "version": "1"
+        }
+      ],
+      "subject_selectors": [
+        {
+          "entity_kind": "solid"
+        }
+      ],
+      "required_inputs": [],
+      "discovery_requirements": [
+        "solid"
+      ]
+    },
+    "context": {
+      "context_id": "7bb26ad906388a55fb0fc3219665670102bb084d1cc06cde2f8aefd779ecb5db",
+      "values": {}
+    },
+    "reviewer_version": "0.1.0"
+  },
+  "base_artifact_sha256": "f010f94b122eec53e9f379fd81192f32affd5fcfefef8c5bf780878970cd0623",
+  "base_snapshot_id": "af8c042efc8118ea8fa149cb91ae19985ee5aade57503ae11b424513858fb0da",
+  "base_factset_id": "c7236210a6d5682a502c7a421cdced8936bfabbc4d689218cf1e1735a45603cb",
+  "verification_base_factset_id": "116eb812e976e400054da17fd38ca532278ce250b90f589877f48b93eefbcb66",
+  "base_source_manifest_sha256": "ac6c6840a3a8b717dee6ca3e81467dd410752b9b9108d51fd8aa02763f3633da",
+  "verification_profile": {
+    "schema_version": "0.1",
+    "profile_id": "70274dd0ff7d7158beb032daa6408c91fddf4f9ebdd9a966028cccfc7334f335",
+    "adapter_id": "occt-step",
+    "adapter_version": "0.1.0",
+    "parser_kernel_version": "8.0.1.1",
+    "parse_options": {
+      "read_scope": "assembly",
+      "target_length_unit": "mm",
+      "source_structure": "assembly"
+    },
+    "extractor_version": "0.1.0",
+    "extraction_query_template": {
+      "requests": [
+        {
+          "name": "bbox.extent.x",
+          "predicate": "bbox.extent.x",
+          "subject_id": "*"
+        },
+        {
+          "name": "bbox.extent.y",
+          "predicate": "bbox.extent.y",
+          "subject_id": "*"
+        },
+        {
+          "name": "bbox.extent.z",
+          "predicate": "bbox.extent.z",
+          "subject_id": "*"
+        }
+      ]
+    },
+    "matching": {
+      "profile_id": "69b989bf3d5a5f7ce217fab2e3c5c03dc638e94209b74f646f186980a4bac376",
+      "schema_version": "0.1",
+      "method": "adapter_key",
+      "fingerprint_predicates": [],
+      "tolerance": {
+        "absolute": 0.0,
+        "relative": 0.0
+      }
+    }
+  },
+  "target_entity_ids": [
+    "solid:0"
+  ],
+  "preconditions": [
+    {
+      "check_id": "base-height",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.z",
+      "operator": "==",
+      "value": 30.0,
+      "unit": "mm",
+      "tolerance": {
+        "absolute": 1e-07,
+        "relative": 0.0
+      },
+      "presence_only": false
+    }
+  ],
+  "target_checks": [
+    {
+      "check_id": "resolve:41cd4f98562e4bfdc0bae99931c1a90d1e848b56ff909bf1c67c02705e07595e",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.z",
+      "operator": ">=",
+      "value": 40.0,
+      "unit": "mm",
+      "tolerance": {
+        "absolute": 1e-07,
+        "relative": 0.0
+      },
+      "presence_only": false
+    }
+  ],
+  "invariant_checks": [
+    {
+      "check_id": "depth-preserved",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.y",
+      "unit": "mm",
+      "tolerance": {
+        "absolute": 1e-07,
+        "relative": 0.0
+      }
+    },
+    {
+      "check_id": "width-preserved",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.x",
+      "unit": "mm",
+      "tolerance": {
+        "absolute": 1e-07,
+        "relative": 0.0
+      }
+    }
+  ],
+  "data_retention_checks": [],
+  "comparison": {
+    "required_baseline_entity_ids": [
+      "solid:0"
+    ],
+    "allowed_added_entity_ids": [],
+    "allowed_removed_baseline_entity_ids": [],
+    "non_target_predicates": [],
+    "non_target_tolerance": {
+      "absolute": 0.0,
+      "relative": 0.0
+    },
+    "data_retention_not_applicable": true
+  },
+  "output_policy": {
+    "format": "step",
+    "path": "D:/work/CC/cad-to-facts-attested-smoke/modified/box.step",
+    "overwrite_base": false
+  }
+}

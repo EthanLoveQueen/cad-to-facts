@@ -1,0 +1,3 @@
+SANITIZED UTF-8 COPY: output path made relative; no viewer URL or token is included.
+Raw-source SHA-256: bb9528168ad161bd83ffc1aafb14c90bdc4e5c1bae5d38492b1061f86c668776
+{"ok": true, "source": "63db9168-33e5-5e97-b8b2-5fb1361276d7", "files": [{"path": "baseline/box.step", "kind": "step", "bytes": 17464, "seconds": 0.0694, "written": true}]}

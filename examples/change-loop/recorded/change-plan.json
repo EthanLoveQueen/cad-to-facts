@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1",
+  "plan_id": "bd610fa94a94dc19af98f5782485d341bdb78cfe5cf5b19e4deeb68f6b3147f9",
+  "request_id": "b3440c4cac5684726b943d8c17ff9ed3912bee1a69eb31a5636265e64f48b9c8",
+  "executor": {
+    "name": "text-to-cad",
+    "version": "0.11.10"
+  },
+  "target_bindings": [
+    {
+      "target_entity_id": "solid:0",
+      "executor_ref": "HEIGHT"
+    }
+  ],
+  "operations": [
+    {
+      "operation_id": "set-height",
+      "kind": "set_parameter",
+      "source_path": "model.py",
+      "parameter": "HEIGHT",
+      "value": 40.0
+    }
+  ],
+  "expected_invalidated_refs": [
+    "solid:0"
+  ],
+  "payload": {
+    "entrypoint": "model.py"
+  },
+  "payload_sha256": "6326be953c9b7cbe65676ec08ad421b5a243dda4f29f85ae28ff312ad6fe9477",
+  "baseline_manifest_validation": "passed"
+}

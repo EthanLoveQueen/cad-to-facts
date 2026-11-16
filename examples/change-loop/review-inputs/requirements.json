@@ -1,0 +1,9 @@
+{
+  "requirements": [
+    {
+      "requirement_id": "req-min-height",
+      "text": "Overall height must be at least 40 mm",
+      "source_ref": "attested-smoke#req-min-height"
+    }
+  ]
+}

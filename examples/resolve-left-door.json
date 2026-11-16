@@ -1,0 +1,10 @@
+{
+  "name_contains_any": ["door", "门"],
+  "spatial": [
+    {
+      "relation": "left_of",
+      "reference": {"is_root": true},
+      "frame": {"preset": "front"}
+    }
+  ]
+}

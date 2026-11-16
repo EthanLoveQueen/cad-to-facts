@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "execution_id": "ba6fb86d0ebff6a6f82b15accd9df7ba7e0a4724d4e196893c7a292061284cae",
+  "approval_id": "dea2dfdb8aba970e924ef5885547a9244f247563445a1b7ecea3394dbf43afeb",
+  "request_id": "b3440c4cac5684726b943d8c17ff9ed3912bee1a69eb31a5636265e64f48b9c8",
+  "plan_id": "bd610fa94a94dc19af98f5782485d341bdb78cfe5cf5b19e4deeb68f6b3147f9",
+  "executor": {
+    "name": "text-to-cad",
+    "version": "0.11.10"
+  },
+  "input_sources": [
+    {
+      "path": "model.py",
+      "sha256": "3c43653e06d7f1934eac622a3d90c5d8963dced8addff0026ca793e258ec541b",
+      "size_bytes": 298
+    }
+  ],
+  "base_artifact_sha256": "f010f94b122eec53e9f379fd81192f32affd5fcfefef8c5bf780878970cd0623",
+  "payload_sha256": "6326be953c9b7cbe65676ec08ad421b5a243dda4f29f85ae28ff312ad6fe9477",
+  "new_sources": [
+    {
+      "path": "model.py",
+      "sha256": "c234aeb2b098b56f4e2eb0d51e3069cca34eec6b410bd9196fbe02afc337e580",
+      "size_bytes": 298
+    }
+  ],
+  "new_artifact_sha256": "334b53438cd306be33753dda06642279213a515e2dbfec9297a813f3363596b6",
+  "new_source_manifest_sha256": "fde6d64c44ebee876b830c21634369c9f252be65283d90253f21415cf114cf89",
+  "result": "succeeded",
+  "mode": "attested_local",
+  "attested_by": "cad-to-facts-test-harness",
+  "attestation": "Observed cad 0.11.10 run model.py and export box.step for the approved HEIGHT=40 test plan in the isolated modified workspace",
+  "log_refs": [
+    "modified/export.log",
+    "modified/run.log"
+  ],
+  "executed_at": "2026-11-14T08:12:42Z"
+}

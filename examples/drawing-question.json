@@ -1,0 +1,92 @@
+{
+  "original_text": "模型空间有多少条线？可见线长度合计是多少？有哪些图层和块？材料相关的文字是什么？门名称候选、语义证据和标题栏 BOM 分别是什么？",
+  "interpretation_basis": "agent_interpretation",
+  "interpretations": [
+    {
+      "interpretation_id": "model-line-count",
+      "intent": "entity_count",
+      "selector": {
+        "kinds": ["line"],
+        "containers": ["Model"]
+      },
+      "include_layer_breakdown": true
+    },
+    {
+      "interpretation_id": "visible-line-count",
+      "intent": "entity_count",
+      "selector": {
+        "kinds": ["line"],
+        "containers": ["Model"],
+        "layer_state_policy": "visible"
+      }
+    },
+    {
+      "interpretation_id": "model-line-length",
+      "intent": "measurement_summary",
+      "predicate": "length",
+      "selector": {
+        "kinds": ["line"],
+        "containers": ["Model"]
+      },
+      "include_values": true
+    },
+    {
+      "interpretation_id": "layer-inventory",
+      "intent": "layer_inventory"
+    },
+    {
+      "interpretation_id": "block-inventory",
+      "intent": "block_inventory"
+    },
+    {
+      "interpretation_id": "steel-text",
+      "intent": "text_lookup",
+      "selector": {
+        "text_contains_any": ["STEEL", "材料"]
+      }
+    },
+    {
+      "interpretation_id": "dimension-inventory",
+      "intent": "dimension_inventory"
+    },
+    {
+      "interpretation_id": "door-name-candidates",
+      "intent": "name_candidate_count",
+      "selector": {
+        "containers": ["Model"]
+      },
+      "candidate_terms": ["door", "门"],
+      "candidate_bases": ["block_name", "layer_name", "text"],
+      "evidence_policy": "candidates_allowed"
+    },
+    {
+      "interpretation_id": "semantic-evidence",
+      "intent": "semantic_evidence",
+      "candidate_terms": ["door", "门", "title", "part", "material", "steel", "材料"],
+      "candidate_bases": ["block_name", "layer_name", "text", "attribute_tag"],
+      "evidence_policy": "candidates_allowed",
+      "max_results": 20
+    },
+    {
+      "interpretation_id": "title-block-bom",
+      "intent": "drawing_bom_lookup",
+      "bom": {
+        "part_tag": "PART",
+        "quantity_tag": "QTY",
+        "material_tag": "MATERIAL",
+        "containers": ["Layout1"]
+      }
+    }
+  ],
+  "assumptions": [
+    "Line counts are raw LINE entity counts in the named container, not semantic edges or engineering features",
+    "Visible excludes entities on layers marked off or frozen; block definitions remain separate from Model",
+    "Door wording is mapped to declared block, layer and text names only and is never functionally validated",
+    "Semantic evidence is declared block/layer/text/attribute-tag context, not a validated material, part or function field",
+    "Dimension values are read from DIMENSION entities and are not associated with the geometry they annotate",
+    "The title-block BOM uses only explicitly supplied attribute tags and the Layout1 container"
+  ],
+  "interpretation_gaps": [
+    "General drawing semantic understanding, title-block field inference and functional feature validation are not implemented"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "skill_name": "cad-to-facts",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "左侧有几扇门？窗户的工程总数是多少？已验证圆柱通孔有几个，半径、长度和形状是什么？区分名称候选、已验证结果和未知范围。",
+      "expected_output": "An explicit agent-interpreted QuestionSpec and AnswerReport separate one known left-door Occurrence match, an unknown strict window total plus one unvalidated name candidate, and one observed validated cylindrical through-hole with radius 3 mm and length 10 mm.",
+      "files": ["examples/question-assembly.step"],
+      "expectations": [
+        "Uses an explicit agent-interpreted QuestionSpec for the compound request",
+        "Reports one known left-door Occurrence match under the declared spatial frame",
+        "Keeps strict window total unknown while reporting one unvalidated name candidate",
+        "Reports one observed validated cylindrical through-hole with radius 3 mm and length 10 mm",
+        "Preserves general feature-coverage gaps and does not modify the source"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "门的正面是哪边？不要先问我；若有多个合理解释分别给出，但不要替我选择。",
+      "expected_output": "The answer preserves target ambiguity and continues to per-occurrence evidence: Left door conditionally uses assumed camera left and Right door uses assumed camera right; neither is a declared or functional front.",
+      "files": ["examples/question-assembly.step"],
+      "expectations": [
+        "Recognizes the unqualified door target as ambiguous rather than choosing a first match",
+        "Continues to exact per-target orientation evidence for Left door and Right door",
+        "Reports Left door as assumed left and Right door as assumed right",
+        "Never presents either direction as source-declared or functionally validated front"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "导出左侧门的正面视图为 left-door-front.svg，并说明目标、方向假设和证据文件。",
+      "expected_output": "A new nonempty SVG and sibling view manifest bind the unchanged source, exact Left door occurrence, left camera, assumed semantic intent, matching output hash/size, and projected geometry evidence.",
+      "files": ["examples/question-assembly.step"],
+      "expectations": [
+        "Creates nonempty left-door-front.svg and left-door-front.view.json",
+        "Renders the unique spatially resolved Left door with camera left",
+        "Preserves semantic_intent.basis=assumed and discloses the heuristic",
+        "Checks artifact/snapshot binding and never overwrites the source"
+      ]
+    }
+  ]
+}

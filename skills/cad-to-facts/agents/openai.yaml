@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAD Facts"
+  short_description: "Extract traceable STEP facts and review them against explicit requirements."
+  default_prompt: "Use $cad-to-facts to inspect this STEP file and review it against my declared requirements."

@@ -1,0 +1,19 @@
+# Hash-bound CAD artifacts must keep their exact bytes across platforms.
+# Git line-ending normalization would change their recorded SHA-256 values.
+*.step    -text
+*.STEP    -text
+*.stp     -text
+*.STP     -text
+*.dxf     -text
+*.DXF     -text
+*.dwg     -text
+*.DWG     -text
+*.svg     -text
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.pdf     binary
+
+# The recorded change loop binds SHA-256 values of every file in this directory,
+# including model.py, manifests and sanitized logs.
+examples/change-loop/** -text

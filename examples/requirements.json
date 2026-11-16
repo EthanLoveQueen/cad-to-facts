@@ -1,0 +1,9 @@
+{
+  "requirements": [
+    {
+      "requirement_id": "req-height",
+      "text": "Overall height must not exceed 30 mm",
+      "source_ref": "examples/requirements.json#req-height"
+    }
+  ]
+}

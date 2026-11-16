@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1",
+  "kind": "supplementary_native_execution_evidence",
+  "recorded_at": "2026-11-14",
+  "executor": {"name": "text-to-cad", "version": "0.11.10"},
+  "limitations": [
+    "This is sanitized supplementary evidence, not an ExecutionRecord or independent cryptographic proof.",
+    "Raw local logs are not redistributed; their SHA-256 values identify the observed source bytes.",
+    "Viewer URLs and tokens were omitted, legacy console separators were normalized, and output paths were made relative.",
+    "No closure.key was observed or claimed."
+  ],
+  "observations": [
+    {
+      "role": "baseline",
+      "document_id": "63db9168-33e5-5e97-b8b2-5fb1361276d7",
+      "native_build": {"result": "built", "entrypoint": "model.py::review_box", "bodies": 1, "bounds_mm": [10, 20, 30]},
+      "native_export": {"ok": true, "format": "step", "bytes": 17464, "written": true},
+      "artifact_sha256": "f010f94b122eec53e9f379fd81192f32affd5fcfefef8c5bf780878970cd0623",
+      "raw_run_log_sha256": "af646b8b6f67723ad71d9673bc42343033a234609a314f8ed55d2b87ea26155b",
+      "raw_export_log_sha256": "bb9528168ad161bd83ffc1aafb14c90bdc4e5c1bae5d38492b1061f86c668776",
+      "sanitized_log_refs": ["baseline/run.log", "baseline/export.log"]
+    },
+    {
+      "role": "modified",
+      "document_id": "66766763-eaa5-5472-b66a-0271f48f467c",
+      "native_build": {"result": "built", "entrypoint": "model.py::review_box", "bodies": 1, "bounds_mm": [10, 20, 40]},
+      "native_export": {"ok": true, "format": "step", "bytes": 17464, "written": true},
+      "artifact_sha256": "334b53438cd306be33753dda06642279213a515e2dbfec9297a813f3363596b6",
+      "raw_run_log_sha256": "82e9de8c504891b2bca6f01406431b519feb030f407c3c5fc919fc572a1e070c",
+      "raw_export_log_sha256": "589825d1aa0fb797dd8c5e106ae64c87e40054061ad038957adce2acdb915934",
+      "sanitized_log_refs": ["modified/run.log", "modified/export.log"]
+    }
+  ]
+}

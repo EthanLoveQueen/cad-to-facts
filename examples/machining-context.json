@@ -1,0 +1,7 @@
+{
+  "values": {
+    "material": "6061-T6 (user-supplied; not read from STEP)",
+    "stock": "sawed bar (user-supplied)",
+    "batch_size": 25
+  }
+}

@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+dist/
+dist-*/
+evals/results/
+test-data/
+*.egg-info/
+.DS_Store
+Thumbs.db
+
+# User-supplied production corpus: private local regression only, never published.
+tests/corpus/
+tests/test_private_*.py

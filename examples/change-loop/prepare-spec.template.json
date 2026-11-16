@@ -1,0 +1,59 @@
+{
+  "executor": {"name": "text-to-cad", "version": "0.11.10"},
+  "target_executor_ref": "HEIGHT",
+  "operations": [
+    {
+      "operation_id": "set-height",
+      "kind": "set_parameter",
+      "source_path": "model.py",
+      "parameter": "HEIGHT",
+      "value": 40.0
+    }
+  ],
+  "payload": {"entrypoint": "model.py"},
+  "output_policy": {
+    "format": "step",
+    "path": "modified/box.step",
+    "overwrite_base": false
+  },
+  "matching": {
+    "profile_id": "0000000000000000000000000000000000000000000000000000000000000000",
+    "method": "adapter_key"
+  },
+  "preconditions": [
+    {
+      "check_id": "base-height",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.z",
+      "operator": "==",
+      "value": 30.0,
+      "unit": "mm",
+      "tolerance": {"absolute": 1e-7, "relative": 0.0}
+    }
+  ],
+  "invariant_checks": [
+    {
+      "check_id": "width-preserved",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.x",
+      "unit": "mm",
+      "tolerance": {"absolute": 1e-7, "relative": 0.0}
+    },
+    {
+      "check_id": "depth-preserved",
+      "subject_id": "solid:0",
+      "predicate": "bbox.extent.y",
+      "unit": "mm",
+      "tolerance": {"absolute": 1e-7, "relative": 0.0}
+    }
+  ],
+  "data_retention_checks": [],
+  "comparison": {
+    "required_baseline_entity_ids": ["solid:0"],
+    "allowed_added_entity_ids": [],
+    "allowed_removed_baseline_entity_ids": [],
+    "non_target_predicates": [],
+    "non_target_tolerance": {"absolute": 0.0, "relative": 0.0},
+    "data_retention_not_applicable": true
+  }
+}

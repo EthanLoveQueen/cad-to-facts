@@ -1,0 +1,6 @@
+SANITIZED UTF-8 COPY: local viewer URL/token omitted; legacy-encoded separators normalized to x.
+Raw run-log SHA-256: af646b8b6f67723ad71d9673bc42343033a234609a314f8ed55d2b87ea26155b
+built model.py::review_box cold in 3.12s: bodies 1 run; 2 misses, 0 hits; body 0.23s, names 0.03s, document 0.02s
+  parts 1 x bounds 10 x 20 x 30 mm x joints 0 x sequences 0
+  id: 63db9168-33e5-5e97-b8b2-5fb1361276d7
+  view: [omitted local viewer URL and token]

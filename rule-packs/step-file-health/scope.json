@@ -1,0 +1,6 @@
+{
+  "included_rules": [{"rule_id": "step-snapshot-ready", "version": "1"}],
+  "subject_selectors": [{"entity_kind": "snapshot"}],
+  "required_inputs": [],
+  "discovery_requirements": ["snapshot"]
+}

@@ -1,0 +1,12 @@
+{
+  "original_text": "Count declared-name door candidates, without treating them as validated doors",
+  "interpretation_basis": "user_supplied",
+  "interpretations": [
+    {
+      "interpretation_id": "door-candidates",
+      "intent": "feature_count",
+      "feature_kinds": ["door"],
+      "evidence_policy": "candidates_allowed"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "included_rules": [{"rule_id": "min-height", "version": "1"}],
+  "subject_selectors": [{"entity_kind": "solid"}],
+  "required_inputs": [],
+  "discovery_requirements": ["solid"]
+}

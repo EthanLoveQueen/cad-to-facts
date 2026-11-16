@@ -1,0 +1,9 @@
+{
+  "requirements": [
+    {
+      "requirement_id": "step-readable-ready",
+      "text": "The STEP artifact shall reach the ready snapshot state under the selected parser profile; failed or degraded reads are not accepted as file-health compliance.",
+      "source_ref": "docs/detailed-design.md:127"
+    }
+  ]
+}

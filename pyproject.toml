@@ -1,0 +1,88 @@
+[project]
+name = "cad-to-facts"
+version = "0.1.0"
+description = "Evidence-driven CAD facts, deterministic requirements review and change verification"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "cad-to-facts contributors" }]
+keywords = [
+    "cad",
+    "step",
+    "dwg",
+    "dxf",
+    "occt",
+    "ezdxf",
+    "pmi",
+    "requirements-review",
+    "change-verification",
+    "agent-skills",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Manufacturing",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+]
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "cadquery-ocp==8.0.1.1.0",
+    "ezdxf==1.4.5",
+    "pydantic>=2.12,<3",
+    "rfc8785>=0.1,<1",
+]
+
+[project.scripts]
+facts = "cad_to_facts.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/EthanLoveQueen/cad-to-facts"
+Repository = "https://github.com/EthanLoveQueen/cad-to-facts"
+Issues = "https://github.com/EthanLoveQueen/cad-to-facts/issues"
+Changelog = "https://github.com/EthanLoveQueen/cad-to-facts/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4,<10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cad_to_facts"]
+
+[tool.hatch.build.targets.sdist]
+# Never ship local/third-party test corpora or the test suite: test-data contains
+# user-supplied production files that must not be redistributed.
+include = [
+    "/src",
+    "/skills",
+    "/docs",
+    "/examples",
+    "/rule-packs",
+    "/evals",
+    "/scripts",
+    "/.claude-plugin",
+    "/.github",
+    "/README.md",
+    "/LICENSE",
+    "/CONTRIBUTING.md",
+    "/SECURITY.md",
+    "/GLOSSARY.md",
+    "/CLAUDE.md",
+    "/cad-to-facts-plan.md",
+    "/CHANGELOG.md",
+    "/uv.lock",
+    "/pyproject.toml",
+]
+exclude = [
+    "/evals/results",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

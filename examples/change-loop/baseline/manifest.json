@@ -1,0 +1,35 @@
+{
+  "schema_version": "0.1",
+  "manifest_sha256": "ac6c6840a3a8b717dee6ca3e81467dd410752b9b9108d51fd8aa02763f3633da",
+  "lineage_kind": "root",
+  "parent_manifest_sha256": null,
+  "generator": {
+    "name": "text-to-cad",
+    "version": "0.11.10"
+  },
+  "parameters": {
+    "WIDTH": 10.0,
+    "DEPTH": 20.0,
+    "HEIGHT": 30.0
+  },
+  "sources": [
+    {
+      "path": "model.py",
+      "sha256": "3c43653e06d7f1934eac622a3d90c5d8963dced8addff0026ca793e258ec541b",
+      "size_bytes": 298
+    }
+  ],
+  "dependency_files": [],
+  "generated_artifacts": [
+    {
+      "path": "box.step",
+      "sha256": "f010f94b122eec53e9f379fd81192f32affd5fcfefef8c5bf780878970cd0623",
+      "size_bytes": 17464,
+      "format": "step",
+      "source_paths": [
+        "model.py"
+      ]
+    }
+  ],
+  "modified_from": []
+}

@@ -1,0 +1,21 @@
+{
+  "version": "1",
+  "rules": [
+    {
+      "rule_id": "min-height",
+      "version": "1",
+      "requirement_refs": ["req-min-height"],
+      "subject_selector": {"entity_kind": "solid"},
+      "inputs": [{"name": "height", "predicate": "bbox.extent.z"}],
+      "checker": "numeric.compare",
+      "parameters": {
+        "operator": ">=",
+        "threshold": 40.0,
+        "unit": "mm",
+        "abs_tol": 1e-7
+      },
+      "severity": "error",
+      "source": {"reviewed_by": "attested-smoke-test"}
+    }
+  ]
+}

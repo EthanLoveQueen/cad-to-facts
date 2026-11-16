@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1",
+  "approval_id": "dea2dfdb8aba970e924ef5885547a9244f247563445a1b7ecea3394dbf43afeb",
+  "request_id": "b3440c4cac5684726b943d8c17ff9ed3912bee1a69eb31a5636265e64f48b9c8",
+  "plan_id": "bd610fa94a94dc19af98f5782485d341bdb78cfe5cf5b19e4deeb68f6b3147f9",
+  "base_artifact_sha256": "f010f94b122eec53e9f379fd81192f32affd5fcfefef8c5bf780878970cd0623",
+  "base_source_manifest_sha256": "ac6c6840a3a8b717dee6ca3e81467dd410752b9b9108d51fd8aa02763f3633da",
+  "executor": {
+    "name": "text-to-cad",
+    "version": "0.11.10"
+  },
+  "payload_sha256": "6326be953c9b7cbe65676ec08ad421b5a243dda4f29f85ae28ff312ad6fe9477",
+  "approver": "cad-to-facts-test-harness",
+  "decision": "approved",
+  "approved_at": "2026-11-14T08:10:14Z"
+}

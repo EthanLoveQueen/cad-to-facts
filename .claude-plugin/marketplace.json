@@ -1,0 +1,36 @@
+{
+  "name": "cad-to-facts",
+  "owner": {
+    "name": "cad-to-facts contributors"
+  },
+  "metadata": {
+    "description": "Traceable CAD facts and deterministic requirements review"
+  },
+  "description": "Traceable CAD facts and deterministic requirements review",
+  "version": "0.1.0",
+  "plugins": [
+    {
+      "name": "cad-to-facts",
+      "source": "./",
+      "displayName": "CAD facts",
+      "description": "Extracts traceable STEP and DWG/DXF evidence, declared AP242 semantic PMI and model/drawing BOMs; reviews requirements, resolves spatial occurrence references, answers bounded model questions, exports target-isolated SVG views, and verifies external changes. DWG requires optional ODA. Deterministic and local; VLM inference is not enabled.",
+      "version": "0.1.0",
+      "author": {
+        "name": "cad-to-facts contributors"
+      },
+      "license": "MIT",
+      "category": "productivity",
+      "tags": [
+        "cad",
+        "step",
+        "dwg",
+        "dxf",
+        "pmi",
+        "requirements",
+        "review",
+        "technical-views"
+      ]
+    }
+  ]
+}
+

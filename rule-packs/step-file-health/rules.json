@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "rules": [
+    {
+      "rule_id": "step-snapshot-ready",
+      "version": "1",
+      "review_type": "file_health",
+      "requirement_refs": ["step-readable-ready"],
+      "subject_selector": {"entity_kind": "snapshot"},
+      "inputs": [],
+      "checker": "snapshot.status",
+      "parameters": {"equals": "ready"},
+      "severity": "error",
+      "source": {
+        "reviewed_by": "cad-to-facts maintainers",
+        "applies_to": ["step", "single_part", "assembly"],
+        "validation_ref": "rule-packs/step-file-health/validation.md",
+        "limit": "Readiness only; not geometry, PMI, manufacturing or exporter-equivalence proof"
+      }
+    }
+  ]
+}

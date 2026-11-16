@@ -1,0 +1,25 @@
+{
+  "name": "cad-to-facts",
+  "version": "0.1.0",
+  "description": "Local deterministic CAD facts and workflows: STEP occurrence/spatial resolution, bounded feature and assumed-orientation reports, evidence-guided answers, target-isolated SVG views with manifests, STEP and DWG/DXF evidence, declared AP242 semantic PMI, requirements review, model/drawing BOM and external-change verification. DWG uses optional local ODA conversion; no VLM inference is enabled.",
+  "author": {
+    "name": "cad-to-facts contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cad",
+    "step",
+    "dwg",
+    "dxf",
+    "occt",
+    "ezdxf",
+    "requirements",
+    "review",
+    "facts",
+    "pmi",
+    "agent-skills",
+    "target-resolution",
+    "technical-views"
+  ],
+  "skills": "./skills/"
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Global front view",
+  "camera": {"preset": "front"},
+  "display": {"show_hidden_lines": false},
+  "image": {
+    "width": 1200,
+    "height": 900,
+    "padding": 24,
+    "curve_deflection_mm": 0.1,
+    "max_points": 200000
+  }
+}
