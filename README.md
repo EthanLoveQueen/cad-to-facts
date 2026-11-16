@@ -80,6 +80,12 @@ claude plugin marketplace add EthanLoveQueen/cad-to-facts
 claude plugin install cad-to-facts@cad-to-facts
 ```
 
+Then invoke `/cad-to-facts` in a Claude Code session:
+
+```text
+/cad-to-facts 检查 examples/question-assembly.step，左侧的门在哪里？
+```
+
 For local skill development:
 
 ```bash
