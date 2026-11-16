@@ -17,6 +17,9 @@ agent skills tell the model when and how to call it without inventing facts.
 
 [Agent skill](#use-it-as-an-agent-skill) · [Capabilities](#capabilities) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Scope](#scope-and-honest-limits) · [Docs](#documentation)
 
+**Status:** `0.1.0` alpha. The implemented surface is intentionally narrow; see
+[scope and honest limits](#scope-and-honest-limits).
+
 ## Why cad-to-facts
 
 - **Facts with provenance.** Every fact binds an artifact SHA-256, snapshot, units, method and source
@@ -110,15 +113,18 @@ CLI, packaging and plugin manifest, not model behavior. See the
 
 | Capability | Command | Result |
 | --- | --- | --- |
-| Inspect STEP | `facts inspect` | Artifact, snapshot, selective facts and explicit gaps |
-| Query drawings | `facts query` / `facts inspect --summary` | Bounded DXF/DWG entity, layer, block and text output |
-| Ask bounded questions | `facts ask` | AnswerReport with assumptions, count states, evidence and gaps |
-| Resolve and view | `facts resolve` / `facts render` | Exact occurrence plus new-only SVG and `.view.json` |
-| Review | `facts review` | `satisfied / violated / unknown / not_applicable` findings and coverage |
-| BOM and PMI | `facts bom` / `facts pmi` | Neutral model BOM and declared AP242 semantic PMI |
-| Prepare a change | `facts prepare-change` | Immutable `ChangeRequest` and external handoff plan; no execution |
-| Verify a change | `facts verify-change` | Re-parsed output checks and separate execution provenance |
-| Prepare process input | `facts process-input` | Constrained single-solid neutral work product |
+| [Inspect STEP](#inspect-a-step-file) | `facts inspect` | Artifact, snapshot, selective facts and explicit gaps |
+| [Query drawings](#inspect-or-review-a-dwgdxf-drawing) | `facts query` / `facts inspect --summary` | Bounded DXF/DWG entity, layer, block and text output |
+| [Ask bounded questions](#ask-bounded-step-model-questions) | `facts ask` | AnswerReport with assumptions, count states, evidence and gaps |
+| [Feature candidates and orientation](#ask-bounded-step-model-questions) | `facts features` / `facts orient` | Unvalidated name candidates, validated through-holes, assumed front |
+| [Resolve and view](#resolve-a-step-target-and-export-a-view) | `facts resolve` / `facts render` | Exact occurrence plus new-only SVG and `.view.json` |
+| [Review](#review-a-step-file) | `facts review` | Findings and coverage for STEP and drawing snapshots |
+| [BOM and PMI](#extract-a-model-bom) | `facts bom` / `facts pmi` | Neutral model BOM and declared AP242 semantic PMI |
+| [Drawing BOM](#inspect-or-review-a-dwgdxf-drawing) | `facts drawing-bom` | Explicit attribute-tag BOM from drawing blocks |
+| [Prepare a change](#prepare-and-verify-a-change) | `facts prepare-change` | Immutable `ChangeRequest` and external handoff plan; no execution |
+| [Verify a change](#prepare-and-verify-a-change) | `facts verify-change` | Re-parsed output checks and separate execution provenance |
+| [Prepare process input](#prepare-a-constrained-process-card-input) | `facts process-input` | Constrained single-solid neutral work product |
+| [Diagnose setup](#development-and-tests) | `facts doctor --check` | Python, dependency, temp-directory and optional ODA diagnostics |
 
 All commands emit JSON with evidence and honest gaps. See the [command sections](#inspect-a-step-file).
 
@@ -126,7 +132,7 @@ All commands emit JSON with evidence and honest gaps. See the [command sections]
 
 ### Install
 
-Clone the repository and create the locked environment:
+Prerequisites: `uv` and Python 3.13. Clone the repository and create the locked environment:
 
 ```bash
 git clone https://github.com/EthanLoveQueen/cad-to-facts.git
@@ -218,6 +224,19 @@ choose a first match.
 - [Extract a model BOM](#extract-a-model-bom) or [declared semantic PMI](#extract-declared-semantic-pmi)
 - [Prepare and verify an external change](#prepare-and-verify-a-change)
 
+## CLI conventions
+
+- Every command writes one JSON object to stdout; errors are JSON objects too.
+- Exit `0` for a normal result, including `violated` findings and `ambiguous` answers.
+- Exit `2` for configuration or input errors.
+- Exit `3` for internal or checker failures; `review` and `verify-change` also return `3` when
+  `tool_error=true`.
+- Source files are read-only. Commands that create output (`render`) refuse to overwrite existing
+  files.
+- The deterministic core is offline and does not call AI or network services.
+- Configuration inputs are JSON; YAML is not accepted.
+- Envelopes carry `schema_version`; persisted records use RFC 8785 canonical JSON content identities.
+
 ## How it works
 
 ```text
@@ -252,8 +271,8 @@ process-input profile. It is not a complete release across all planned format sl
 | Format | Read and measure | Review / BOM / PMI | Notes |
 | --- | --- | --- | --- |
 | STEP | OCCT B-rep; volume, area, bbox; assembly scope via XCAF | Review, model BOM, declared semantic PMI, change verification | `single_part` and `assembly` read scopes |
-| DXF | ezdxf; layers, blocks, text, selected 2D measurements | Drawing BOM and bounded questions | Unitless values remain explicit gaps |
-| DWG | Via optional ODA File Converter | Drawing workflows | Converter is proprietary, not bundled; explicit `--oda-path` required |
+| DXF | ezdxf; layers, blocks, text, selected 2D measurements | Review, drawing BOM and bounded questions | Unitless values remain explicit gaps |
+| DWG | Via optional ODA File Converter | Review and drawing workflows | Converter is proprietary, not bundled; explicit `--oda-path` required |
 
 Not implemented: IFC, mesh adapters, general feature recognition, title-block inference, PNG output
 and VLM inference.
@@ -354,6 +373,7 @@ uv run facts inspect drawing.dxf --summary
 uv run facts query drawing.dxf --kind line --layer Geometry --limit 20
 uv run facts ask drawing.dxf --spec examples/drawing-question.json
 uv run facts render drawing.dxf --output drawing.svg
+uv run facts drawing-bom drawing.dxf --part-tag PART --material-tag MATERIAL
 uv run facts inspect drawing.dwg --oda-path "C:\Program Files\ODA\ODAFileConverter\ODAFileConverter.exe"
 ```
 
@@ -363,19 +383,20 @@ ODA. The converter path must be supplied explicitly with `--oda-path` (also acce
 `facts review`); install locations are not guessed. If ODA is unavailable, inspection still returns
 JSON with `snapshot.status=failed` and `ADAPTER_UNAVAILABLE`.
 
-The drawing profile catalogs layers, model/paper-space layouts, non-layout blocks and entities. It
-extracts declared type/layer/container, text and block-name/attribute facts, plus selected 2D lengths,
-areas and circle circumferences. Curved LWPOLYLINEs use exact bulge-arc formulas. XREFs remain
-unresolved by default; `--xref-mode linked|flatten` with explicit `--xref-root` directories enables
-bounded local resolution. `drawing-bom --part-tag PART` extracts only explicitly configured block
-attributes. Uncounted XREFs block BOM completeness unless `--allow-xref-exclusion` explicitly accepts
-their exclusion from the selected scope. `facts ask` accepts an explicit `DrawingQuestionSpec` for
-bounded drawing facts; drawing natural-language grammar, title-block inference, INSERT geometry
-expansion and dimension-to-geometry association are not implemented. `examples/question-drawing.dxf`
-and `examples/drawing-question.json` are a runnable analytic example; they do not establish exporter
-interoperability. Query page sizes must be positive, and SVG rendering ignores
-external raster images rather than reading them implicitly. None of these features infers title-block
-semantics, and SVG is not fidelity proof. See
+`facts review` accepts drawing snapshots with the same explicit requirement/rule/scope/context
+inputs as STEP. The drawing profile catalogs layers, model/paper-space layouts, non-layout blocks and
+entities. It extracts declared type/layer/container, text and block-name/attribute facts, plus
+selected 2D lengths, areas and circle circumferences. Curved LWPOLYLINEs use exact bulge-arc formulas.
+XREFs remain unresolved by default; `--xref-mode linked|flatten` with explicit `--xref-root`
+directories enables bounded local resolution. `drawing-bom --part-tag PART` extracts only explicitly
+configured block attributes. Uncounted XREFs block BOM completeness unless `--allow-xref-exclusion`
+explicitly accepts their exclusion from the selected scope. `facts ask` accepts an explicit
+`DrawingQuestionSpec` for bounded drawing facts; drawing natural-language grammar, title-block
+inference, INSERT geometry expansion and dimension-to-geometry association are not implemented.
+`examples/question-drawing.dxf` and `examples/drawing-question.json` are a runnable analytic example;
+they do not establish exporter interoperability. Query page sizes must be positive, and SVG rendering
+ignores external raster images rather than reading them implicitly. None of these features infers
+title-block semantics, and SVG is not fidelity proof. See
 [the drawing contract](docs/drawing-analysis.md) for units, licensing and security limits and
 [drawing questions](docs/drawing-questions.md) for the question profile.
 
@@ -549,6 +570,25 @@ matching, and more source-backed change cases remain design/validation work.
 - [Change verification](skills/cad-to-facts/references/change-verification.md)
 - [Recovery](docs/recovery.md)
 - [Corpus validation](docs/corpus-validation.md)
+- [Glossary](GLOSSARY.md)
+- [Security policy](SECURITY.md)
+
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| `src/cad_to_facts/` | Deterministic core and `facts` CLI |
+| `skills/` | Two Claude Code skills and one-level references |
+| `docs/` | Behavioral contracts, installation, recovery and implementation status |
+| `tests/` | Public-interface and regression tests |
+| `examples/` | Runnable analytic STEP/DXF/JSON examples |
+| `rule-packs/` | Explicit, sourced review rule packs |
+| `evals/` | Local model-backed skill behavior evaluations |
+| `.claude-plugin/` | Plugin and marketplace manifests |
+
+The CLI and its JSON envelopes are the primary integration surface. Python modules under `src/` are
+importable and used by the tests, but no separately versioned library API is promised yet. See the
+[detailed design](docs/detailed-design.md) for the contracts.
 
 ## Development and tests
 
@@ -559,13 +599,18 @@ ODA File Converter is an optional external DWG prerequisite, not a Python depend
 uv sync --locked
 uv run facts doctor --check
 uv run pytest
+uv run pytest tests/test_review_numeric.py   # one module
+uv build
+uv run python scripts/check_dist.py dist
+claude plugin validate .claude-plugin/marketplace.json
 ```
 
 `uv sync` downloads the locked Python and project dependencies into the local `.venv` when they are
 not already available; the deterministic commands themselves are offline. See the
 [installation guide](docs/installation.md) for isolated CLI/plugin installation and updates and the
 [recovery playbook](docs/recovery.md) for doctor codes, adapter failures and verification recovery.
-CI and distribution checks are defined in `.github/workflows/ci.yml` and `scripts/check_dist.py`.
+CI runs the locked install, doctor, tests, build and archive checks on Ubuntu, Windows and macOS; see
+`.github/workflows/ci.yml` and `scripts/check_dist.py`.
 
 ## Contributing
 
