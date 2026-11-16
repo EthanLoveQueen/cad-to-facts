@@ -72,6 +72,11 @@
   MMC and the unsupported datum-system gap. The fixtures are generated in temporary test
   directories and do not establish exporter interoperability.
 
+### Changed
+
+- Reorganized the README around a concise overview, capability table, real output excerpts and a
+  dedicated implementation-status page. No CLI behavior changed.
+
 ### Fixed
 
 - Cross-platform relocated-output replay now recognizes a Windows-recorded absolute

@@ -14,6 +14,7 @@ REQUIRED_SDIST = {
     "skills/cad-to-facts/SKILL.md",
     "docs/installation.md",
     "docs/recovery.md",
+    "docs/status.md",
     "docs/drawing-questions.md",
     "examples/change-loop/README.md",
     "examples/change-loop/baseline/box.step",

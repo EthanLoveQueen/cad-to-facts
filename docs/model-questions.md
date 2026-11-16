@@ -41,11 +41,11 @@ validation, incomplete discovery and unavailable shapes.
 ## Assumed orientation
 
 ```bash
-facts orient model.step --selector examples/orient-right-door.json
+facts orient examples/question-assembly.step --selector examples/resolve-left-door.json
 ```
 
-The example selector targets `occurrence:343` in the documented real container; substitute an exact
-occurrence from your own resolution for other models.
+`resolve-left-door.json` selects the public example's left door. Substitute an explicit selector or an
+exact occurrence from your own resolution for other models.
 
 `OrientationPolicy` currently supports only `largest_bbox_face_outward_from_assembly`. After the target
 selector resolves uniquely, `infer_orientation` constructs six global-axis camera candidates
