@@ -1475,3 +1475,29 @@ def test_output_location_must_match_the_request_policy(tmp_path):
     )
     assert location.status == "failed"
     assert location.reason_code == "OUTPUT_LOCATION_MISMATCH"
+
+
+def test_relocated_replay_accepts_a_windows_recorded_output_path(tmp_path):
+    """A Windows-recorded absolute path must relocate on POSIX replays too."""
+
+    scenario = _scenario(tmp_path)
+    scenario["change"] = bind_change_request(
+        scenario["change"].model_copy(
+            update={
+                "output_policy": OutputPolicy(
+                    path="D:/recorded-run/modified/after.step"
+                )
+            }
+        )
+    )
+
+    report = verify_change(
+        _verification_request(scenario, allow_relocated_output=True)
+    )
+
+    assert report.verification_status == "passed"
+    location = next(
+        check for check in report.checks if check.check_id == "output-location"
+    )
+    assert location.status == "passed"
+    assert "relocated-output replay" in location.message

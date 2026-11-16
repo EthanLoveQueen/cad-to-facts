@@ -74,6 +74,9 @@
 
 ### Fixed
 
+- Cross-platform relocated-output replay now recognizes a Windows-recorded absolute
+  `output_policy.path` on POSIX hosts. Explicit `--replay-relocated-output` still requires the
+  recorded filename to match the actual output filename.
 - Failed question snapshot/feature reads now return null `unknown` counts rather than observed zeroes.
   Spatial filtering also retains candidate geometry diagnostics and prevents completeness when an
   unevaluable candidate bounding box is missing.

@@ -1,7 +1,7 @@
 """Deterministic, read-only verification of a separately produced CAD artifact."""
 
 import math
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from cad_to_facts.contract import (
@@ -1143,28 +1143,51 @@ def _missing_after_report(request: VerificationRequest) -> ModificationReport:
     return bind_modification_report(report)
 
 
+def _output_location_matches(
+    declared_raw: str, actual_raw: str, allow_relocated: bool
+) -> tuple[bool, bool]:
+    """Compare output locations without assuming the recording platform.
+
+    A recorded Windows absolute path is still absolute when replayed on POSIX.
+    Explicit relocated-output replay may accept a different directory only when
+    the recorded filename matches the actual filename.
+    """
+
+    declared = Path(declared_raw)
+    declared_windows = PureWindowsPath(declared_raw)
+    actual = Path(actual_raw).resolve()
+    if declared.is_absolute() or declared_windows.is_absolute():
+        matches = (
+            declared.is_absolute()
+            and str(declared.resolve()).casefold() == str(actual).casefold()
+        )
+        relocated = False
+        if not matches and allow_relocated:
+            relocated = declared_windows.name.casefold() == actual.name.casefold()
+            matches = relocated
+        return matches, relocated
+
+    declared_parts = tuple(part.casefold() for part in declared.parts)
+    matches = (
+        bool(declared_parts)
+        and "." not in declared_parts
+        and ".." not in declared_parts
+        and len(declared_parts) <= len(actual.parts)
+        and tuple(part.casefold() for part in actual.parts[-len(declared_parts) :])
+        == declared_parts
+    )
+    return matches, False
+
+
 def _output_location_check(request: VerificationRequest) -> VerificationCheck:
     """Check the declared semantic output location without writing either artifact."""
 
     assert request.after_artifact is not None
-    declared = Path(request.change.output_policy.path)
-    actual = Path(request.after_artifact.source_locator).resolve()
-    relocated = False
-    if declared.is_absolute():
-        matches = str(declared.resolve()).casefold() == str(actual).casefold()
-        if not matches and request.allow_relocated_output:
-            relocated = declared.name.casefold() == actual.name.casefold()
-            matches = relocated
-    else:
-        declared_parts = tuple(part.casefold() for part in declared.parts)
-        matches = (
-            bool(declared_parts)
-            and "." not in declared_parts
-            and ".." not in declared_parts
-            and len(declared_parts) <= len(actual.parts)
-            and tuple(part.casefold() for part in actual.parts[-len(declared_parts) :])
-            == declared_parts
-        )
+    matches, relocated = _output_location_matches(
+        request.change.output_policy.path,
+        request.after_artifact.source_locator,
+        request.allow_relocated_output,
+    )
     message = (
         "The output filename was checked under explicit relocated-output replay; "
         "the recorded absolute directory was not revalidated"
